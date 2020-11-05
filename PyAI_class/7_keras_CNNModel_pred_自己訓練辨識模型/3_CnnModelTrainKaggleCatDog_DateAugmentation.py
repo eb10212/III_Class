@@ -47,14 +47,14 @@ model.compile(loss='binary_crossentropy', optimizer=RMSprop(lr=1e-4), metrics=['
 
 #新增區塊:增加學習樣本=====================================================================
 train_datagen =  ImageDataGenerator(
-    rescale=1./255, #指定將影象像素縮放到0~1之間
-    rotation_range=45, # 角度值，0~180，影象旋轉
-    width_shift_range=0.2, # 水平平移，相對總寬度的比例
-    height_shift_range=0.2, # 垂直平移，相對總高度的比例
-    shear_range=0.2, # 隨機傾斜角度
-    zoom_range=0.2, # 隨機縮放範圍
-    horizontal_flip=True,# 一半影象水平翻轉
-    fill_mode = 'nearest' #產生新的影像若有出現空白處，「以最接近的像素」填補像素
+    rescale=1./255,         #指定將影象像素縮放到0~1之間
+    rotation_range=45,      #影象旋轉角度(0~180)
+    width_shift_range=0.2,  #水平平移(相對總寬度的比例)
+    height_shift_range=0.2, #垂直平移(相對總高度的比例)
+    shear_range=0.2,        #隨機傾斜角度
+    zoom_range=0.2,         #隨機縮放範圍
+    horizontal_flip=True,   #一半影象水平翻轉
+    fill_mode = 'nearest'   #產生新的影像若有出現空白處,以"最接近的像素"填補像素
 )
 #=======================================================================================
 
