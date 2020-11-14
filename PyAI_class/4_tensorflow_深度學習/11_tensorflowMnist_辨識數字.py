@@ -44,10 +44,11 @@ import tensorflow as tf
 
 x = tf.placeholder(tf.float32, shape=[None, 784])       #x表示image輸入,欄位有28*28個
 Y = tf.placeholder(tf.float32, shape=[None, 10])        #y表示label輸出,欄位分別代表one-hot表示的數字0~9,共10欄
-#tf.placeholder:接收執行期間的數據,shape=[None, 784]:假設不知道要輸入幾筆資料(所以可先填none)
+#tf.placeholder:接收執行期間的數據(當還沒有input data時,使用placeholder先在graph裡面佔位子,Session時在指定變數帶入),shape=[None, 784]:假設不知道要輸入幾筆資料(所以可先填none)
 
 W = tf.Variable(tf.zeros([784,10]))                     #權重值w中的[]為[x的欄位數,最後y輸出的比數]
 b = tf.Variable(tf.zeros([10]))                         #偏移值b中的[]為[最後y輸出的比數]
+#variable:表示可以動態調整, 所以只有將graph凍結時,才能將訓練好的參數儲存下來(且由於是由session做管理,所以需要做初始化之後才能使用)
 
 #模型公式y_=x*w=b
 y_ = tf.matmul(x, W) + b
