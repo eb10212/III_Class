@@ -25,6 +25,8 @@ faces = face_cascade.detectMultiScale(
 )
 print('找到 ', len(faces), " 張臉")
 
+
+#標示出人臉的框框
 for (x, y, w, h) in faces:
     img = cv2.rectangle(img,
                         (x, y),         #頂點座標(左上角座標)
