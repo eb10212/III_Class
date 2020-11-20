@@ -1,0 +1,411 @@
+
+#機器學習步驟:
+1.資料取得與標記
+2.資料清洗
+3.特徵選擇
+4.模型選擇:演算法
+5.模型訓練與測試
+6.模型評估與優化
+
+#資料來源:
+1.電子問卷
+2.網路爬蟲
+3.網路API
+
+-------------------------------------------------------------
+#機器學習演算法(淺層):
+1.分類:KNN(監督式)
+       -模型最終要看的是驗證後的分數,因為訓練模型有可能產生過你和的現象(分數很高,但實務上反而不能使用！！！)
+      SVM(監督式)
+       -超平面作為決策曲面
+       -預設使用RBF函數當作映射核心(參數:gamma 決定特徵空間的分佈/C 懲罰係數,對誤差的容忍度)
+       -gamma越大,支持向量越少,可能發生過擬合,且預測速度較慢
+       -C越大,越不能容忍錯誤,容易出現過擬合
+2.分群:K-Means(非監督式)
+3.趨勢擬合
+4.減少維度
+
+@名詞補充:
+正樣本的精確度(precision):實際是正樣本/被預測為正樣本
+正樣本的召回(recall)     :被預測是正樣本/實際為正樣本
+預測的準確率(accuracy)   :預測正確(正負樣本)/所有樣本
+F1 score               :2*precision*recall / (precision+recall)
+
+---------------------------------------------------------------------
+#機器學習演算法(深層):模擬人類的神經網路(輸出層/隱藏層/輸出層)
+1.MLP(多層感知層):
+    -由一層或多層神經元組成
+    -輸入層/隱藏層/輸出層
+    -適用於表格式數據集/分類/迴歸預測問題
+    -學習從輸入到輸出的映射
+2.CNN(卷積神經網路):
+    -卷積層/池化層/全連接層
+    -處理具有空間關係的數據(圖像數據)/分類/迴歸預測問題
+    -將圖像數據映射到輸出變量
+3.RNN(遞歸神經網絡):
+    -處理單詞和段落序列(自然語言處理)
+    -處理序列預測問題:1對多/多對1/多對多
+    -較難訓練
+    -文本數據/語音數據/分類預測問題/迴歸預測問題/生成模型
+    -不適合於表格式數據集/圖像數據輸入
+
+
+#概念:
+在y=ax+b中,找出a和b的最佳參數值的概念
+
+#方式:
+1.監督式:
+    -所有資料皆有標籤(tag/label)
+    -告訴機器是什麼tag,反覆訓練,之後再測試,機器就會判斷
+2.非監督式:
+    -依據資料的分佈,自動找出相關性與潛在的規則(無須事先tag)
+    -關聯性/異常檢測/人類的判斷方式
+3.半監督學習:
+    -只針對少部分資料進行tag(節省人工成本),再透過有tag的資料找出特徵並分類
+    -GAN生成對抗網路(資料產生器v.s資料辨識器)
+4.強化學習(非監督式):
+    -透過每一次與環境中互動學習,並加以修正(懲罰或獎勵reward)
+
+#步驟:
+1.準備訓練樣本與標註
+2.選擇適合的梯度下降演算法(求權重w/偏項b)
+3.選擇適合的損失函數
+4.選擇適合的神經元激活函數(管理輸入訊號的通過)
+5.訓練出模型
+6.預測出結果
+
+激活函數(範圍值的概念,不是非黑即白的答案):
+1.sigmoid函數:
+    -多少的程度相似
+    -應用:最後一層只有一個神經元輸出(最後只有一個答案)
+    -缺點:飽和區曲線平緩(梯度值很小),影響性能有效區間
+2.ReLU函數:
+    -線性函數
+    -應用:用於"多分類"神經網路的隱藏層(中間層)神經元輸出
+    -優點:使用最多(計算簡單,效率高)
+3.Softmax函數:
+    -判斷哪個分類
+    -將輸入轉換為0~1間的實數(p+q=1)
+    -應用:用於"多分類"神經網路的最後一層神經元輸出
+
+Bias偏移量:幫助激活函數可以更全面的適應所有輸入的訊號
+    -假設輸入的新資料在2分法中剛好位於正中間,則偏移量就可以決定新資料最後是屬於哪裡
+
+損失函數:與現實中的誤差(預測值-實際值)
+    -影響訓練模型的好壞
+1.MSE平均"平方"誤差:loss函數比較曲線
+    -缺:深度學習的參數更新時,會朝著誤差比較大(梯度越大)去更新,可能會造成模型正確率不高
+2.MAE平均"絕對"誤差:loss函數比較線性
+    -缺:當loss太小,可能會在低點產生震盪,導致無法停止
+3.RMSE:將MSE開根號,改善問題(統計中"標準差"的概念)
+3.cross-entropy交叉熵:評估兩個分類的"機率分配"有多接近(越相似越靠近0,反之為1)
+    -"分類"或"圖形辨識"時,需選擇cross-entropy交叉熵才能正確評估模型！！！
+
+W權重:藉由調整"W權重",來改變原有輸入的資料x,找出最小誤差
+梯度:一種向量(每往前走一步,"上升"的幅度),在某一點上往正向方向的斜率概念
+    -梯度下降法:找最小值發生的位置
+    -⍶:學習率/學習步伐/超參數
+    -當⍶越大->學習步伐越大->訓練次數下降->可能會略過最低點
+    -當⍶越小->學習步伐越小->訓練次數上升->可能會陷入"局部"最低點
+1.BGD批量梯度下降法:每訓練一次,使用整個訓練數據集來計算梯度,速度最慢
+2.SGD隨機梯度下降法:每訓練一次,隨機使用"一個"訓練資料來計算梯度,速度快,但下降過程曲折
+3.mini-batch SGD小批量梯度下降法:每訓練一次,隨機使用"一組"訓練資料來計算梯度,速度稍慢,但下降過程平滑
+4.momentum動量法:改善mini-batch SGD震盪量,提高學習效率
+
+#CNN:卷積神經網路
+    -擅長圖片的處理(類似人類視覺:從微小的地方開始判斷,最後再組合起來)
+    -將圖片降維
+    -較有效地保留圖片特徵
+    -工作流程:卷積層/池化層/全連接層
+
+---------------------------------------------------------------------
+#TensorFlow:資料"張量"的運算流程,低階的深度學習API
+    -張量:向量/矩陣的延伸,有階數(0階:純量/數值,1階:向量,2階:矩陣...)
+    -將資料轉換為張量加以運算
+    -分散式執行能力
+    -pip install tensorflow==1.14.0
+
+在TensorFlow的世界里，變數的定義和初始化是分開的，所有關於圖變量的赋值或計算都要通過tf.Session().run來執行。
+想要將所有圖變量進行全體初始化時需使用tf.global_variables_initializer()
+
+#步驟:
+1.資料準備
+2.演算法設計(損失函數/優化器:梯度下降法)
+3.執行(先全體初始化的動作)
+4.結果
+
+#.ckpt:為tensorflow的副檔名
+
+#基本操作:
+import tensorflow as tf
+1.建立張量:
+    -張1=tf.constant()
+    -張2=tf.range()
+    ....
+2.執行:為了避免忘記將Session close,所以通常會用with來完成
+with tf.Session() as sess:
+    print(sess.run(張1))
+
+#進階學習1(線性回歸):
+0.定義資料:x/y
+1.設定初始權重值:a/b=某張量變數
+2.設定學習模型函數:y=ax+b / y_hat=tf.matmul(x,a)+b
+3.設定損失函數(MSE):lost=tf.reduce_mean(tf.square(y-y_hat))
+4.選擇優化器:optimizer=tf.train.GradientDescentOptimizer(learning_rate=0.5)
+5.找出最小損失:train=optimizer.minimize(lost)
+6.設定初始化:init=tf.global_variable_initializer()
+7.模型訓練:sess.run(a)/sess.run(b)
+         -with tf.Session() as sess:
+            sess.run(init)
+            for epoch in range(epoch+1):
+                batch_x,batch_y=每次訓練會隨機輸入多少數量
+                _,accuracy_,loss_,cp_=sess.run([train,accuracy,loss,cp],={x:batch_x,y:batch_y})
+8.算正確率:c=tf.equal(tf.argmax(y_hat,1),tf.argmax(y,1))
+          cp=tf.cast(c,tf.float32)
+          accuracy=tf.reduce_mean(cp)
+10.儲存模型:save=tf.train.Saver().save(sess,'模型路徑名稱.ckpt')
+
+10.呼叫模型:saver.restore(sess,'模型路徑名稱.ckpt')
+11.預測結果:p=sess.run(tf.argmax(y_hat,1),feed_dict={x:特徵的資料來源,y:類型的資料來源}
+
+#進階學習2(曲線):
+1'.會有2組以上的a/b
+    l1=tf.matmul(x,a)+b
+    l1=tf.nn.relu(l1)       加入激活函數
+    y_hat=tf.matmul(l1,a2)+b2
+---------------------------------------------------------------------
+#Keras:高階(較傾向人類語言)的深度學習API
+    -易於學習且較靈活的運用
+    -可結合低階的深度學習(TensorFlow)
+    -工作流程與TensorFlow相同
+    -pip install keras==2.2.5 , pillow
+
+#over-fitting過擬合
+    -機器學習過於自信
+    -試圖通過所有的訓練資料(誤差值很低),導致真實的資料下,誤差值會異常的飆高
+    -可能造成原因:資料量太少
+    -防止方式:1.增加訓練集
+             2.丟棄(dropout):每一次訓練時,隨機忽略神經元和神經連結(不會過度依賴某些神經元)
+
+#.h5:為kears的副檔名
+
+#範例:
+A)MLP:詳見1_KearsMnistMLP_多層....py
+    1.全連結層(Dense)
+B)CNN:詳見3_KearsMnistCNN.py
+    1.卷基層:用"已知"的特徵,判斷目前輸入的影像特徵
+        -提取"局部特徵"(並非所有神經都相連)
+        -效率較全連結高
+        -利用過濾器(卷積核:1矩陣框:只有0或1)對圖像掃描(內積的概念)
+        -padding='same':將圖片外圍捕0,避免重要的特徵被忽略
+    2.池化層:因特徵數據龐大,須將特徵收斂(萃取精華/將維/降低參數量)
+        -池化格數:在那格區間裡找出最大值(當特徵)
+    3.平坦層:特徵值轉為一維資料以供後續全連結層使用
+    4.全連結層(Dense):將特徵組合而成答案(傳統神經網路)
+        -通常在CNN中為最後一層
+    param數=[卷積核大小(矩陣)*輸入的通道(=1,灰階)+偏項]*過濾器數量(輸出數量)
+
+#基本操作(建模):
+from keras.models import Sequential
+from keras.layers.core import Dense,Dropout,Activation      #MLP需要
+from keras.layers.core import Flatten,Conv2D,MaxPooling2D   #CNN額外需要(再加MLP)
+from keras.optimizers import RMSprop
+from keras.callbacks import EarlyStopping,CSVLogger
+
+1.設定基本資料:
+    batch_size=xxx  每次讀入多少資料
+    num_classes=xxx 共幾個類別
+    epochs=xx       共反向訓練多少次
+2.讀取資料(並將x,y區分train/test,正規化)
+3.建立模型:
+    model=Sequential()
+4-1.加入神經元(MLP):全連結層
+    model.add(Dense(input_dim=xxx,                  #只有第一層需要註明(欄位數量)
+                    units=xxx,                      #自己定義要幾個神經元(2的次方的數量)
+                    kernrl_initializer='xxxxxx',    #設置權重值的初始值(normal:常態)
+                    bias_initializer='xxxxx',       #設置偏移量的初始值(zeros:0)
+                    activation='oooo',              #選擇激活函數(relu:隱藏層推薦使用,softmax:最後一層輸出層建議使用)課本p6
+                    name='xxx'                      #此層的名稱
+                    )
+              )
+    model.add(Dropout(0.2))                         #輸入的0.2會被丟棄(防止過擬合)
+    model.summary()                                 #查看模型
+4-2:加入神經元(CNN):
+    卷積層
+    model.add(Conv2D(filters=x,                     #定義過濾器數量x個
+                     kernel_size=(n,n),             #定義卷積核大小(n*n)
+                     padding='same',                #是否要對周圍填充0
+                     input_shape=(m,m,1),           #原始輸入的影像經正規劃後的大小(m*m*1)
+                     activation='xxxxx'             #激活函數
+                    )
+              )
+    池話層
+    model.add(MaxPooling2D(pool_size=(2,2))         #池化大小(圖片變為m/2*m/2*1)
+    model.add(Dropout(0.2))                         #輸入的0.2會被丟棄(防止過擬合)
+    全連結層
+    model.add(Dense(units=xxx,                      #此時units的數量要填的是輸出y的數量
+                    activation='softmax'
+                    )
+    model.summary()                                 #查看模型
+5.優化方式:
+    modeel.compile(loss='xxxxxxx',                  #損失函數-categorical_crossentropy:交叉熵
+                   optimizer=xxxxxxxx,              #優化器-RMSprop(lr=1e-4):梯度下降法/adam
+                   metrics=['aaa','bbb','ccc']      #評估標準-accuracy:準確性函數/cost/score
+                   )
+6.設置提早結束的條件與訓練log(可略):
+    estop=EarlyStopping(monitor='var_loss',         #當監測值var_loss不在改變
+                        patience=num)               #幾次後停止(num=1個數字)
+    logger=CSVLogger('log存檔的路徑名稱')              #紀錄log檔
+7.訓練模型:
+    model_for_final=model.fit(x_train,y_train,          #放入"訓練"的資料x和y
+                              batch_size=batch_size,    #訓練次數(步驟1有設定batch_size=1個數字)
+                              epochs=epochs,            #訓練幾次(步驟1有設定epochs=1個數字)
+                              verbose=0/1/2,            #進度條的顯示方式(0:不顯示,1:顯示(預設),2:每批輸出一行)
+                              validation_split=0.1      #資料中要驗證的百分比(拿出0.1來當驗證)
+                              callbacks=[logger,estop]  #訓練中回傳的動作(步驟6)
+                              )
+8.模型評估:
+    score=model.evaluate(x_test,y_test,                 #放入"測試"的資料x和y
+                         verbose=0/1/2)                 #進度條的顯示方式(0:不顯示,1:顯示(預設),2:每批輸出一行)
+    #輸出格式為list:[loss值,acc值]
+9.模型儲存:
+    model.save('xxxxxxxx.h5')                   #keras副檔名.h5
+    del model                                   #清除記憶體(釋放空間)
+
+#1.基本操作(使用模型預測):資料集的測試資料
+import keras
+from keras.models import load_model
+1.載入模型:
+    model=load_model('模型名稱.h5')
+2.讀取資料(x_train,y_train,x_test,y_test)並正規化
+3.預測新資料:
+    prd=model.predict_classes(x_test)           #將測試資料放入
+
+#2.基本操作(使用模型預測):使用額外的圖片做測試
+import keras
+from keras.models import load_model
+import glob,cv2                                 #讀取檔案/圖像處理
+from keras.preprocess import image              #載入檔案圖片
+1.載入圖片:格式轉換成圖片/灰階/轉為numpy矩陣/正規化
+2.載入模型
+3.預測新資料
+
+---------------------------------------------------------------------
+#ImageNet預訓練模型的使用(範例:6~9章)
+    -世界上最大的圖像辨識資料庫
+    -ISLVRC:是ImageNet的子集合
+
+#預訓練模型:Keras將熱門的模型及訓練的全種植收集起來,一般使用者就可直接套用模型
+    -遷移學習:例如若要套用VGG16來辨識圖形(鳥/狗/車子...),只需修改後面的3層即可-輸出層的類別,無需從頭訓練模型
+    -VGG16:使用13個:3*3的卷積層/2*2的池化層+3個:全連結層,共16層
+    -ResNet50:殘差結構理論(解決退化問題),將輸出的y與輸入的x做對應元素的相加(結合原始的x),加速訓練也加強效果
+    -InceptionV3
+
+#退化問題(梯度消失):隨著模型深度越深,錯誤率反而增加的情形
+    -1.神經網路的反向傳遞更新參數(利用loss function來得出參數調整的梯度)->導致越上層的參數無法有效更新
+    -2.使用ResNet模型
+
+#基本操作:
+from keras.applications.xxxx import XXXX(大寫),preprocess_input, decode_predictions
+                        #XXXX=預使用的model:VGG16/ResNet50/InceptionV3
+from keras.preprocess import image
+import numpy as np
+from PIL import Image
+import matplotib.pyplot as plt
+
+model=XXXX(weights='imagenet',include_top=Ture(預設)/False)
+1.載入所需要的圖片並轉成矩陣形式np,target_size須根據各model做調整(ex:VGG16/ResNet50皆是224*224,InceptionV3為299*299)
+2.新增一個維度np.expand_dims(arr_img,axis=0)
+3.preds=model.predict(preprocess_input(x))      預測圖片(需轉換為model可讀的形式)
+4.results=decode_predictions(preds,top=3)[0]    取前幾名
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#資料擴增法(data augmentation)
+    -由於資料量太少,可能導致過擬合的現象
+    -自動產生虛擬的影像,來增加訓練樣本:ImageDataGenerator()函式
+
+#基本操作:
+from keras.preprocessing import image
+from keras.preprocessing.image import ImageDataGenerator
+from keras.applications.xxxx import preprocess_input
+1.先將資料預處理過後
+2.自行增加新樣本:
+increase_test_data=ImageDataGenerator(rescale=1./255,                                #將圖片像素縮放在0~1間
+                                      preprocessing_function=preprocess_input,
+                                      rotation_range=45,                             #將圖片旋轉幾度(0~180度)
+                                      width_shift_range=0.2,                         #水平平移(相對總寬度的比例)
+                                      height_shift_range=0.2,                        #垂直平移(相對總寬度的比例)
+                                      shear_range=0.2,                               #隨機傾斜的角度
+                                      zoom_range=0.2,                                #雖積縮放的範圍
+                                      horizontal_flip=True,                          #一半影像水平翻轉(左右顛倒)
+                                      fill_mode='nearest'                            #產生的影像若有空白,填補像素
+                                      )
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#微調(Fine-tune方式)
+    -部分卷基層解凍與全連結層一起訓練分類器(低層是通用的特徵,所以不用在微調參數;而高層則關注較特定的特徵)
+    -結合預模型(部分卷基層,低層)+自定義的部分(部分卷基層,高層)+自定義分類(全連結層)
+
+#基本操作:
+from keras.applications.xxxx import XXXX                      使用以訓練好的xxxx模型
+from keras.models import Sequential                           加上自定義的模型
+from keras.layers.core import Dense,Dropout
+from keras.layers.core import Flatten
+from keras.optimizers import RMSprop
+from keras.callbacks import EarlyStopping,ModelCheckpoint
+1.載入預訓練的模型
+    prior_model=XXXX(weights='imagenet',include_top=False,input_shape=(00,00,3))
+2.先設定所有層皆可訓練,凍結布林變數
+    prior_model.trainable=True
+    set_trainable=Flase
+3.解凍部分需自定義的層
+    for i in prior_model[:249]:         第249層前凍結
+        prior_model.trainable=Flase
+    for i in prior_model[249:]:         第249層後解凍
+        prior_model.trainable=True
+4.建立自己後半段的模型
+    self_model=model=Sequential()
+    self_model.add(prior_model)
+    ....加入自己的神經層與輸出層參考cnn建立
+
+---------------------------------------------------------------------
+#OpenCV:圖像處理/電腦視覺/圖型辨識
+    pip install opencv-python
+    pip install opencv-contrib-python
+
+#基本操作:
+import cv2
+圖片a=cv2.imread('圖片路徑')                      #cv2.IMREAD_GRAYCALE在參數中(灰階)
+cv2.namedWindow('視窗名稱',cv2.WINDOW_NORMAL)
+cv2.imshow('視窗名稱',圖片a)
+cv2.waitKey(0)
+cv2.destroyALLWindows()
+
+#進階操作:
+cv2.cvtColor(圖片a,cv2.COLOR_BGR2GRAY)    灰階
+圖片b=cv2.imread('圖片路徑')[y軸:x軸]       裁切
+cv2.resize(圖片a,(長,寬))
+cv2.flip(圖片a,0/1/-1)
+rotation
+cv2.putText(圖片a,加入的文字,坐標,字體,字體大小,顏色,字體粗細,類型)
+cv2.rectangle(圖片a,左上角頂點座標,右下角鼎點座標,顏色,線條粗細)          標示方框(ex顯示對應物品的方框)
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#LBPH:OpenCV提供的一套計算每張人臉特徵的演算法
+    -從訓練樣本中學習人臉的特徵,再從袋側影像就算臉部特徵,比較出最相近的特徵值
+
+#基本操作:
+import cv2
+import numpy as np
+
+1.讀取多張圖片a,並存成一個list:
+    images=[,,,,,]
+2.設置特徵(分類)list:
+    labels=[,,,,,]
+3.recognizer=cv2.LBPFaceRecognizer_create()
+4.recognizer.train(images,np.array(labels))
+5.讀取要辨識的圖片:
+    圖片b=cv2.imread(圖片路徑,cv2.IMRRAD_GRAYSCALE)
+6.預測:
+    label,confidence=recognizer.predict(圖片b)
+    print(label)
+    print(confidence)       可性度
